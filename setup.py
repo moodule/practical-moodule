@@ -12,6 +12,8 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
+    'decorator>=4.3.0',
+    'sh>=1.12.4',
     'numpy>=1.14.2',
     'sympy>=1.1.1',
     # TODO: put package requirements here

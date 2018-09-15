@@ -30,10 +30,37 @@ import inspect
 import numpy as np
 import sympy as smp
 
-from practical.log import (
-    function_arg_types_error,
-    function_arg_count_error,
-    console_log)
+#####################################################################
+# MESSAGES
+#####################################################################
+
+def function_arg_types_error(
+        fname: str,
+        expected: str,
+        actual: str,
+        flag: int) -> str:
+    """
+    Convenience function returns nicely formatted error/warning msg.
+
+    Parameters
+    ----------
+    fname: str.
+        The name of the function that failed.
+    expected: type list.
+        The expected type for each parameter.
+    actual: type list.
+        The types of the given arguments.
+    flag: int.
+        Whether it was the input or the output that didn't match.
+
+    Returns
+    -------
+    out: str.
+        The error/warning message.
+    """
+    return "'{}' ".format(fname)\
+          + ("accepts ({}), but ", "returns {}, but ")[flag].format(expected)\
+          + ("was given", "result is")[flag] + " {}".format(actual)
 
 #####################################################################
 # TYPE ENFORCEMENT

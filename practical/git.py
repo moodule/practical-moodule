@@ -21,7 +21,7 @@ from practical.types import *
 #####################################################################
 
 @typecheck
-def add_files_to_github(
+def stage_files(
         path: iterable) -> None:
     """
     Stage files with git.
@@ -36,13 +36,13 @@ def add_files_to_github(
     out: None.
     """
     if isinstance(path, str):
-        _add_file(path)
+        _stage_file(path)
     else:
         for p in path:
-            _add_file(p)
+            _stage_file(p)
 
 @typecheck
-def _add_file(
+def _stage_file(
         path: one_of(os.path.isdir, os.path.isfile)) -> None:
     """
     Utility function to stage a single file with git.
@@ -64,32 +64,18 @@ def _add_file(
 #####################################################################
 
 @typecheck
-def commit_files_to_github(
-        path: iterable=[],
-        message: str='') -> None:
+def commit_to_github(
+        message: str) -> None:
     """
     Commit the staged changes with git.
 
     Parameters
     ----------
-    path:
-        A string or list of strings representing absolute or relative path(s).
+    message: str.
+        The description of the staged changes.
 
     Returns
     -------
     out: None.
     """
-    commit_msg = message
-    if not commit_msg:
-        now = datetime.now()
-        commit_msg = '"{}-{}-{}_{}-{}."'.format(
-            now.year,
-            now.month,
-            now.day,
-            now.hour,
-            now.minute)
-
-    if path:
-        add_files_to_github(path)
-
-    sh.git.commit('-m', commit_msg)
+    sh.git.commit('-m', message)

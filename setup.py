@@ -12,27 +12,28 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
+    'beautifulsoup4>=4.6.3',
     'decorator>=4.3.0',
-    'sh>=1.12.4',
     'numpy>=1.14.2',
+    'sh>=1.12.4',
     'sympy>=1.1.1',
     # TODO: put package requirements here
 ]
 
 setup_requirements = [
     'bumpversion>=0.5.3',
-    'wheel>=0.29.0',
-    'watchdog>=0.8.3',
     'Sphinx>=1.4.8',
+    'watchdog>=0.8.3',
+    'wheel>=0.29.0',
     # TODO(moodule): put setup requirements (distutils extensions, etc.) here
 ]
 
 test_requirements = [
+    'coverage>=4.1'
+    'flake8>=2.6.0',
     'pytest>=2.9.2',
     'pytest-runner>=2.11.1',
-    'flake8>=2.6.0',
     'tox>=2.3.1',
-    'coverage>=4.1'
     # TODO: put package test requirements here
 ]
 

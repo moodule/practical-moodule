@@ -39,7 +39,7 @@ test_requirements = [
 
 setup(
     name='practical',
-    version='0.0.0',
+    version='0.0.1',
     description="Personal toolbox.",
     long_description=readme + '\n\n' + history,
     author="David Mougeolle",

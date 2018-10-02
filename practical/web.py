@@ -21,7 +21,9 @@ from practical.types import *
 #####################################################################
 # TEXT EXTRACTION
 #####################################################################
-def extract_text_from_html_script(html):
+@typecheck
+def extract_text_from_html_script(
+        html:str) -> str:
     soup = BeautifulSoup(html)
 
     # kill all script and style elements

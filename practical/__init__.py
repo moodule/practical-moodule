@@ -36,7 +36,7 @@ from practical.web import (
 
 __author__ = """David Mougeolle"""
 __email__ = 'david.mougeolle@moodule.net'
-__version__ = '0.3.0'
+__version__ = '0.4.1'
 
 __all__ = [
     'convert_dict_to_array',

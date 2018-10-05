@@ -24,7 +24,7 @@ from practical.types import *
 @typecheck
 def extract_text_from_html_script(
         html:str) -> str:
-    soup = BeautifulSoup(html)
+    soup = BeautifulSoup(markup=html, features="lxml")
 
     # kill all script and style elements
     for script in soup(["script", "style"]):

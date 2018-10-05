@@ -14,6 +14,7 @@ with open('HISTORY.rst') as history_file:
 requirements = [
     'beautifulsoup4>=4.6.3',
     'decorator>=4.3.0',
+    'lxml>=4.2.5',
     'numpy>=1.14.2',
     'sh>=1.12.4',
     'sympy>=1.1.1',

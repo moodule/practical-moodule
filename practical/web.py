@@ -16,14 +16,30 @@ from __future__ import division, print_function, absolute_import
 
 from bs4 import BeautifulSoup
 
-from practical.types import *
+from practical.types import typecheck
 
 #####################################################################
 # TEXT EXTRACTION
 #####################################################################
 @typecheck
-def extract_text_from_html_script(
+def extract_text_from_html_markup(
         html:str) -> str:
+    """
+    Extract the text *visible* to a user on an internet browser,
+    from a string of html markup.
+
+    The chunks of text are separated by newlines.
+
+    Parameters
+    ----------
+    html: str.
+        A string of html markup soup.
+
+    Returns
+    -------
+    out: str.
+        The visible text.
+    """
     soup = BeautifulSoup(markup=html, features="lxml")
 
     # kill all script and style elements

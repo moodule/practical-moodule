@@ -32,7 +32,7 @@ from practical.units import (
     convert_radian_to_degree,
     convert_degree_to_radian)
 from practical.web import (
-    extract_text_from_html_script)
+    extract_text_from_html_markup)
 
 __author__ = """David Mougeolle"""
 __email__ = 'david.mougeolle@moodule.net'
@@ -63,4 +63,4 @@ __all__ += [
     'convert_degree_to_radian']
 
 __all__ += [
-    'extract_text_from_html_script']
+    'extract_text_from_html_markup']

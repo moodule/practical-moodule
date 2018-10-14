@@ -65,6 +65,38 @@ def test_nothing():
 
     assert types.nothing(None)
 
+def test_exactly():
+    bullshit = [
+        (list, []),
+        (lambda x: 3 * x, lambda x: 3 * x), # doesn't work ?
+        (True, 67),
+        (True, bool),
+        (True, bool()),
+        (True, (1,)),
+        (45, -6),
+        (45, lambda x: 45),
+        (np.inf, 45),
+        (None, 'r'),
+        (None, ''),
+        (None, list()),
+        (types.exactly, types.one_of),
+        (types.numeric, types.numeric(4))]
+
+    ok = [
+        (list(), []),
+        (True, bool(67)),
+        (True, bool((1,))),
+        (45, 10+35),
+        ('truc test', 'truc ' + 'test')]
+
+    for pair in bullshit:
+        assert not types.exactly(pair[0])(pair[1])
+        assert not types.exactly(pair[1])(pair[0])
+
+    for pair in ok:
+        assert types.exactly(pair[0])(pair[1])
+        assert types.exactly(pair[1])(pair[0])
+
 def test_one_of():
     x, y, z = smp.symbols('x y z')
 
@@ -92,6 +124,11 @@ def test_one_of():
     for a in ok_symbolic:
         assert not types.one_of(types.iterable, types.specifications)(a)
         assert types.one_of(types.iterable, types.symbolic)(a)
+
+    assert types.one_of(
+        types.exactly('truc'),
+        types.finite,
+        types.exactly(list()))([])
 
 def test_iterable():
     bullshit = [

@@ -12,7 +12,12 @@ from __future__ import division, print_function, absolute_import
 from decorator import decorator
 import numpy as np
 
-from practical.types import *
+from practical.types import (
+    iterable,
+    nothing,
+    numeric,
+    one_of,
+    typecheck)
 
 #####################################################################
 # SHAPE ENFORCING
@@ -60,12 +65,17 @@ def convert_dict_to_array(
     """
     Creates an array with the size of keys, filling missing dimensions.
 
-    Args:
-        data (dict): the dictionary to convert.
-        keys (list of string): the FULL list of axes keys.
+    Parameters
+    ----------
+    data: dict.
+        The dictionary to convert.
+    keys: list of string
+        The FULL list of axes keys.
 
-    Returns:
-        np.array: the array, with the size of keys.
+    Returns
+    -------
+    out: np.array.
+        The array, with the size of keys.
     """
     axes = keys if keys else data.keys()
 
@@ -82,6 +92,11 @@ def reshape_into_matrix(
         data: np.ndarray,
         shape: tuple) -> np.ndarray:
     """
+    Parameters
+    ----------
+
+    Returns
+    -------
     """
     return np.reshape(
         a=data,
@@ -92,8 +107,13 @@ def reshape_into_matrix(
 def reshape_into_vector(
         data: np.ndarray) -> np.ndarray:
     """
+    Parameters
+    ----------
+
+    Returns
+    -------
     """
     return np.reshape(
         a=data,
-        newshape=(-1, data.size),
+        newshape=(data.size,),
         order='C')

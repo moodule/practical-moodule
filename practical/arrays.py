@@ -85,7 +85,7 @@ def convert_dict_to_array(
 
     data_array = np.array(data_list)
 
-    return reshape_into_vector(data_array)
+    return data_array
 
 @typecheck
 def reshape_into_matrix(
@@ -115,5 +115,5 @@ def reshape_into_vector(
     """
     return np.reshape(
         a=data,
-        newshape=(data.size,),
+        newshape=(-1,),
         order='C')

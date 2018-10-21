@@ -212,7 +212,7 @@ def one_of(*checkers) -> callable:
     """
     def _one_of(x):
         return any([
-            checker(x)
+            _check(x, checker)
             for checker in checkers])
 
     return _one_of

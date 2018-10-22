@@ -2,4 +2,4 @@
 
 __author__ = """David Mougeolle"""
 __email__ = 'david.mougeolle@moodule.net'
-__version__ = '0.4.3'
+__version__ = '0.4.4'

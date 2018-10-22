@@ -13,6 +13,7 @@ from decorator import decorator
 import numpy as np
 
 from practical.types import (
+    anything,
     iterable,
     nothing,
     numeric,
@@ -23,7 +24,36 @@ from practical.types import (
 # SHAPE ENFORCING
 #####################################################################
 
-def reshapes(*shapes):
+@typecheck
+def _reshape(
+        arg: anything,
+        shape: tuple) -> anything:
+    """
+    Reshapes any object.
+    Checks whether the object is an array and the shape is valid.
+
+    Parameters
+    ----------
+    x:
+        Anything.
+    shape: tuple.
+        A tuple of integers ; can ba empty.
+
+    Returns
+    -------
+    out:
+        Anything, but reshaped if the conditions are met.
+    """
+    if shape and isinstance(arg, np.ndarray):
+        return np.reshape(
+            a=arg,
+            newshape=shape)
+    else:
+        return arg
+
+@typecheck
+def reshapes(
+        *shapes) -> callable:
     """
     Function decorator. Check whether the ndarray arguments match the
     required shapes.
@@ -40,16 +70,20 @@ def reshapes(*shapes):
         All the ndarray arguments are reshaped.
     """
     def caller(f, *args, **kwargs):
-        assert len(args) == len(shapes)
+        assert (
+            len(args) == len(shapes)
+            or len(args) + 1 == len(shapes))
 
         reshaped_args = [
-            np.reshape(
-                a=arg,
-                newshape=shapes[i])
-            if shapes[i] and isinstance(arg, np.ndarray) else arg
+            _reshape(arg=arg, shape=shapes[i])
             for i, arg in enumerate(args)]
 
-        return f(*reshaped_args, **kwargs)
+        if len(shapes) == len(args) + 1:     # shape the return value
+            return _reshape(
+                arg=f(*reshaped_args, **kwargs),
+                shape=shapes[-1])
+        else:
+            return f(*reshaped_args, **kwargs)
 
     return decorator(caller)
 

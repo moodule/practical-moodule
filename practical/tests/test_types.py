@@ -109,6 +109,7 @@ def test_one_of():
         3,
         -9.45,
         math.pi,
+        np.inf,
         True,
         np.bool_(64),
         x,
@@ -117,8 +118,8 @@ def test_one_of():
         4.5 * z ** x]
 
     for a in ok_spec:
-        assert not types.one_of(types.numeric, types.symbolic)(a)
-        assert not types.one_of(types.finite)(a)
+        assert types.one_of(types.numeric, types.symbolic)(a)
+        assert types.one_of(types.finite)(a)
         assert types.one_of(types.symbolic, types.iterable)(a)
 
     for a in ok_symbolic:
@@ -129,6 +130,45 @@ def test_one_of():
         types.exactly('truc'),
         types.finite,
         types.exactly(list()))([])
+
+def test_all_of():
+    x, y, z = smp.symbols('x y z')
+
+    ok_spec = [
+        {'a': (-2, 345)},
+        {1: (-1, -1), 'z': (9, 9.3)},
+        {'test': (3.4, 9.2)}]
+
+    ok_symbolic = [
+        3,
+        -9.45,
+        math.pi,
+        np.inf,
+        True,
+        np.bool_(64),
+        x,
+        x * y + z,
+        smp.cos(y),
+        4.5 * z ** x]
+
+    for a in ok_spec:
+        assert not types.all_of(types.numeric, types.symbolic)(a)
+        assert types.all_of(types.finite)(a)
+        assert types.all_of(types.specifications, types.iterable)(a)
+
+    for a in ok_symbolic:
+        assert types.all_of(types.scalar, types.symbolic)(a)
+        assert types.one_of(types.finite, types.symbolic)(a)
+
+    assert types.all_of(
+        types.exactly(1.5),
+        types.finite)(
+            1.5)
+
+    assert types.all_of(
+        types.exactly(1.5),
+        types.finite)(
+            1.5)
 
 def test_iterable():
     bullshit = [
@@ -158,19 +198,11 @@ def test_iterable():
 # NUMERIC PREDICATES
 #####################################################################
 
-def test_numeric():
+def test_numeric_on_scalars():
     bullshit = [
         None,
-        "dsgiojdgf",
-        lambda x, y : x - y,
-        (3.1, np.nan),
-        (-84,),
-        (),
-        (43, -2),
-        {},
         tuple,
-        {'tr': 'àdfsg', (4, 5): 5.6},
-        np.arange(12).reshape(3, 4)]
+        lambda x, y : x - y]
 
     ok = [
         np.inf,
@@ -186,20 +218,31 @@ def test_numeric():
     for x in ok:
         assert types.numeric(x)
 
-def test_finite():
+def test_numeric_on_iterables():
     bullshit = [
-        None,
-        np.inf,
-        "dsgiojdgf",
-        lambda x, y : x - y,
+        'kgjdqlsfj',
+        {'tr': 'àdfsg', (4, 5): 5.6}]
+
+    ok = [
         (3.1, np.nan),
-        (),
         (-84,),
+        (),
         (43, -2),
         {},
-        tuple,
-        {'tr': 'àdfsg', (4, 5): 5.6},
         np.arange(12).reshape(3, 4)]
+
+    for x in bullshit:
+        assert not types.numeric(x)
+
+    for x in ok:
+        assert types.numeric(x)
+
+def test_finite_on_scalars():
+    bullshit = [
+        None,
+        tuple,
+        np.inf,
+        lambda x, y : x - y]
 
     ok = [
         3,
@@ -207,6 +250,27 @@ def test_finite():
         math.pi,
         True,
         np.bool_(64)]
+
+    for x in bullshit:
+        assert not types.finite(x)
+
+    for x in ok:
+        assert types.finite(x)
+
+def test_finite_on_iterables():
+    bullshit = [
+        'kgjdqlsfj',
+        {'tr': 'àdfsg', (4, 5): 5.6},
+        (-np.inf, 673),
+        dict(a=65, g=np.nan),
+        (3.1, np.nan)]
+
+    ok = [
+        (-84,),
+        (),
+        (43, -2),
+        {},
+        np.arange(12).reshape(3, 4)]
 
     for x in bullshit:
         assert not types.finite(x)
@@ -225,14 +289,8 @@ def test_symbolic():
         None,
         "dsgiojdgf",
         lambda x, y : x - y,
-        (3.1, np.nan),
-        (-84,),
-        (),
-        (43, -2),
-        {},
         tuple,
-        {'tr': 'àdfsg', (4, 5): 5.6},
-        np.arange(12).reshape(3, 4)]
+        {'tr': 'àdfsg', (4, 5): 5.6}]
 
     ok = [
         3,
@@ -244,7 +302,14 @@ def test_symbolic():
         x,
         x * y + z,
         smp.cos(y),
-        4.5 * z ** x]
+        4.5 * z ** x,
+        (3.1, np.nan),
+        (-84,),
+        (),
+        (43, -2),
+        {},
+        np.arange(12).reshape(3, 4),
+        (x, x+y)]
 
     for a in bullshit:
         assert not types.symbolic(a)
@@ -366,3 +431,29 @@ def test_trace_data_predicate_on_dicts():
 #####################################################################
 # MATRIX & ARRAY PREDICATES
 #####################################################################
+
+def test_scalar_predicate_on_bs():
+    bs_scalar = [
+        range(10),
+        dict(a=12, t='dfhgs'),
+        'ligu',
+        (int, 'fdgdsf'),
+        np.arange(20).reshape(1, -1)]
+
+    assert not any(map(
+        types.scalar,
+        bs_scalar))
+
+def test_scalar_predicate_on_single_element_iterables():
+    ok_scalar = [
+        range(1),
+        dict(t='dfhgs'),    # scalar but not numeric
+        'l',                # same here
+        tuple,
+        None,
+        np.arange(1).reshape(1, -1),
+        34576.435]
+
+    assert all(map(
+        types.scalar,
+        ok_scalar))

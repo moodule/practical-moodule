@@ -21,6 +21,7 @@ from practical.types import typecheck
 #####################################################################
 # TEXT EXTRACTION
 #####################################################################
+
 @typecheck
 def extract_text_from_html_markup(
         html:str) -> str:
@@ -52,7 +53,7 @@ def extract_text_from_html_markup(
     # break into lines and remove leading and trailing space on each
     lines = (line.strip() for line in text.splitlines())
     # break multi-headlines into a line each
-    chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+    chunks = (phrase.strip() for line in lines for phrase in line.split("."))
     # drop blank lines
     text = '\n'.join(chunk for chunk in chunks if chunk)
 

@@ -52,7 +52,7 @@ def _reshape(
         return arg
 
 @typecheck
-def reshapes(
+def reshape(
         *shapes) -> callable:
     """
     Function decorator. Check whether the ndarray arguments match the

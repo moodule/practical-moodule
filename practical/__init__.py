@@ -13,7 +13,7 @@ from __future__ import division, print_function, absolute_import
 
 from practical.arrays import (
     convert_dict_to_array,
-    reshapes,
+    reshape,
     reshape_into_matrix,
     reshape_into_vector)
 from practical.memory import (
@@ -27,7 +27,8 @@ from practical.types import (
     finite,
     symbolic,
     bounds,
-    specifications)
+    specifications,
+    trace_data)
 from practical.units import (
     convert_radian_to_degree,
     convert_degree_to_radian)
@@ -40,7 +41,7 @@ __version__ = '0.4.7'
 
 __all__ = [
     'convert_dict_to_array',
-    'reshapes',
+    'reshape',
     'reshape_into_matrix',
     'reshape_into_vector']
 
@@ -56,7 +57,8 @@ __all__ += [
     'finite',
     'symbolic',
     'bounds',
-    'specifications']
+    'specifications',
+    'trace_data']
 
 __all__ += [
     'convert_radian_to_degree',

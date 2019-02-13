@@ -48,7 +48,7 @@ def extract_text_from_html_markup(
         script.extract()    # rip it out
 
     # get text
-    text = soup.get_text()
+    text = soup.get_text(separator='.')
 
     # break into lines and remove leading and trailing space on each
     lines = (line.strip() for line in text.splitlines())
